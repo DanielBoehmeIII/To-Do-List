@@ -10,6 +10,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Production",
       template: "./src/template.html", // Path to your HTML template
+      inject: false,
     }),
     new CopyPlugin({
       patterns: [

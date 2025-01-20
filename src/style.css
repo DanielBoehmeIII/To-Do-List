@@ -8,33 +8,69 @@
   --bg-color: #113344;
 }
 
+.teko {
+  font-family: "Teko", serif;
+  font-weight: 400px;
+  font-style: normal;
+}
+
+.geo {
+  font-family: "Geo", serif;
+  font-weight: 400px;
+  font-style: normal;
+}
+
 body {
-  background-color: var(--bg-color);
   width: 100vw;
   height: 100vh;
+  background-color: var(--bg-color);
   display: grid;
+  overflow: hidden;
   grid-template-rows: 5% 95%;
 }
 
 header {
   display: grid;
   grid-row: 1 / 2;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 15% 85%;
   grid-template-rows: 100%;
-  border: 1px solid #ffffff;
+  border: 1px solid gray;
   height: 100%;
+  font-family: "Geo", serif;
+  font-size: 1.5em;
+  letter-spacing: 1px;
+  color: white;
 }
 
 #left-nav {
   display: flex;
   grid-row: 1 / 2;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  padding-right: 1em;
   height: 100%;
+  overflow: hidden;
+}
+
+#username {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 80%;
+  border-right: 1px dashed gray;
+  background-color: rgba(55, 90, 120, 0.7);
+}
+
+#scan-lines {
+  width: 12%;
+  height: 5%;
+  position: absolute;
+  z-index: -1;
 }
 
 #new-project {
+  justify-content: flex-end;
+  padding-right: 1em;
 }
 
 #right-nav {
@@ -49,6 +85,16 @@ header {
 .main-nav-icon {
   display: flex;
   height: 75%;
+  stroke: gray;
+}
+
+#cog {
+  stroke: black;
+  fill: gray;
+}
+
+#power {
+  stroke: green;
 }
 
 #content {
@@ -56,23 +102,42 @@ header {
   display: flex;
 }
 
-#sidebar {
-  display: flex;
-  justify-content: flex-start;
-  height: 100%;
-  width: 20%;
-  border: 1px solid #ffffff;
-  border-top: none;
-  border-bottom: none;
-}
+/* #sidebar { */
+/*   display: flex; */
+/*   justify-content: flex-start; */
+/*   height: 100%; */
+/*   width: 20%; */
+/*   border: 1px solid #ffffff; */
+/*   border-top: none; */
+/*   border-bottom: none; */
+/* } */
 
 #pc-box {
+  display: flex;
+  flex-direction: row;
   height: 100%;
-  width: 80%;
-  background-image: url("https://archives.bulbagarden.net/media/upload/6/6f/Box_Distortion_Platinum_BDSP.png");
+  width: 100%;
+  /* background-image: url("https://archives.bulbagarden.net/media/upload/6/6f/Box_Distortion_Platinum_BDSP.png"); */
   background-size: 110%;
   background-position: center;
+  padding: 1%;
   /* cursor: url("./image/pokemon-pc-box-hand.cur"), auto; */
+}
+
+.app {
+  display: flex;
+  justify-self: flex-start;
+  align-self: flex-start;
+  width: 100%;
+  height: 75%;
+  border-radius: 30%;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.app-container {
+  width: 3%;
+  height: 7%;
+  margin: 1%;
 }
 
 /* #pokemon-cursor { */
@@ -83,6 +148,3 @@ header {
 /*   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); */
 /*   pointer-events: none; */
 /* } */
-
-img {
-}
