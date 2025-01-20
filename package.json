@@ -8,18 +8,19 @@
     "dev": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "deploy": "git subtree push --prefix dist origin gh-pages",
-    "install-dependencies": "npm install webpack webpack-cli html-webpack-plugin style-loader css-loader webpack-dev-server copy-webpack-plugin"
+    "install-dependencies": "npm install -D webpack webpack-cli html-webpack-plugin style-loader css-loader webpack-dev-server copy-webpack-plugin webpack-merge"
   },
   "repository": "https://github.com/DanielBoehmeIII/To-Do-List.git",
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-dev-server": "^5.2.0",
+    "webpack-merge": "^6.0.1"
   }
 }

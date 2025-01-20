@@ -16,7 +16,6 @@ module.exports = {
         {
           from: path.resolve(__dirname, "src/assets/*/*"), // Source folder
           to: "assets", // Destination folder in the `dist` directory
-          clean: true,
         },
       ],
     }),
@@ -35,21 +34,6 @@ module.exports = {
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/i,
         type: "asset/resource", // Handles images
-      },
-      {
-        test: /\.html$/i,
-        loader: "html-loader", // Processes HTML files and rewrites paths
-        options: {
-          sources: {
-            list: [
-              {
-                tag: "img",
-                attribute: "src",
-                type: "src",
-              },
-            ],
-          },
-        },
       },
     ],
   },
