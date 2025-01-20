@@ -1,0 +1,81 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #113344;
+}
+
+body {
+  background-color: var(--bg-color);
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 5% 95%;
+}
+
+header {
+  display: grid;
+  grid-row: 1 / 2;
+  grid-template-columns: 20% 80%;
+  border: 1px solid #ffffff;
+}
+
+#left-nav {
+  display: flex;
+  grid-row: 1 / 2;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1em;
+}
+
+#new-project {
+}
+
+#right-nav {
+  grid-column: 2 / 3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1em;
+}
+
+#content {
+  grid-row: 2 / 3;
+  display: flex;
+}
+
+#sidebar {
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  width: 20%;
+  border: 1px solid #ffffff;
+  border-top: none;
+  border-bottom: none;
+}
+
+#pc-box {
+  height: 100%;
+  width: 80%;
+  background-image: url("https://archives.bulbagarden.net/media/upload/6/6f/Box_Distortion_Platinum_BDSP.png");
+  background-size: 110%;
+  background-position: center;
+  /* cursor: url("./image/pokemon-pc-box-hand.cur"), auto; */
+  cursor: none;
+}
+
+#pokemon-cursor {
+  position: absolute;
+  background-image: url("./image/horse.jpg");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+img {
+}
