@@ -14,8 +14,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "src/assets/*/*"), // Source folder
-          to: "assets", // Destination folder in the `dist` directory
+          from: path.resolve(__dirname, "./assets/*/*"), // Source folder
         },
       ],
     }),

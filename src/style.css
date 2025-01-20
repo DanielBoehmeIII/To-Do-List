@@ -20,7 +20,9 @@ header {
   display: grid;
   grid-row: 1 / 2;
   grid-template-columns: 20% 80%;
+  grid-template-rows: 100%;
   border: 1px solid #ffffff;
+  height: 100%;
 }
 
 #left-nav {
@@ -29,6 +31,7 @@ header {
   justify-content: flex-end;
   align-items: center;
   padding-right: 1em;
+  height: 100%;
 }
 
 #new-project {
@@ -39,7 +42,13 @@ header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  height: 100%;
   padding-right: 1em;
+}
+
+.main-nav-icon {
+  display: flex;
+  height: 75%;
 }
 
 #content {
@@ -64,17 +73,16 @@ header {
   background-size: 110%;
   background-position: center;
   /* cursor: url("./image/pokemon-pc-box-hand.cur"), auto; */
-  cursor: none;
 }
 
-#pokemon-cursor {
-  position: absolute;
-  background-size: cover;
-  width: 40px;
-  height: 40px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-}
+/* #pokemon-cursor { */
+/*   position: absolute; */
+/*   background-size: cover; */
+/*   width: 40px; */
+/*   height: 40px; */
+/*   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); */
+/*   pointer-events: none; */
+/* } */
 
 img {
 }
