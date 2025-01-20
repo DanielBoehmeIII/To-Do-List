@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --open --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "git subtree push --prefix dist origin gh-pages",
+    "deploy": "git add dist -f && git commit -m \"Deployment commit\" && git subtree push --prefix dist origin gh-pages",
     "install-dependencies": "npm install -D webpack webpack-cli style-loader css-loader webpack-dev-server copy-webpack-plugin webpack-merge"
   },
   "repository": "https://github.com/DanielBoehmeIII/To-Do-List.git",
