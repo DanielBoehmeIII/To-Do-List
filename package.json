@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --watch --config webpack.dev.js",
+    "dev": "webpack serve --open --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "deploy": "git subtree push --prefix dist origin gh-pages",
-    "install-dependencies": "npm install -D webpack webpack-cli html-webpack-plugin style-loader css-loader webpack-dev-server copy-webpack-plugin webpack-merge"
+    "install-dependencies": "npm install -D webpack webpack-cli style-loader css-loader webpack-dev-server copy-webpack-plugin webpack-merge"
   },
   "repository": "https://github.com/DanielBoehmeIII/To-Do-List.git",
   "author": "",
