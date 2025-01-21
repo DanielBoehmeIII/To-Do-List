@@ -1,15 +1,85 @@
 import "./style.css";
-// import staticLinesPath from "https://st.depositphotos.com/15722686/52859/i/450/depositphotos_528591340-stock-photo-abstract-background-copy-space-text.jpg";
+import underwaterBg from "./img/underwater-bg.png";
+import forestBg from "./img/forest-bg.png";
+import stoneBg from "./img/stone-bg.png";
+import sandBg from "./img/sand-bg.png";
+import lotusBg from "./img/lotus-bg.png";
+import seaFloorBottomBg from "./img/sea-floor-bottom-bg.png";
+import volcanoBg from "./img/volcano-bg.png";
+import snowBg from "./img/snow-bg.png";
+import desertBg from "./img/desert-bg.png";
+import seaShellBg from "./img/sea-shell-bg.png";
+import oceanFloorBg from "./img/ocean-floor-bg.png";
+import riverFloorBg from "./img/river-floor-bg.png";
+import skyBg from "./img/sky-bg.png";
+import pinkBg from "./img/pink-bg.png";
+import orangeBg from "./img/orange-bg.png";
+import brickBg from "./img/brick-bg.png";
+import frameBg from "./img/frame-bg.png";
+import spaceBg from "./img/space-bg.png";
+import puddleBg from "./img/puddle-bg.png";
+import fenceBg from "./img/fence-bg.png";
+import torchicBg from "./img/torchic-bg.png";
+import trioFaceBg from "./img/trio-face-bg.png";
+import pikaTwoBg from "./img/pika-two-bg.png";
+import dialgaBg from "./img/dialga-bg.png";
+import galacticLogoBg from "./img/galactic-logo-bg.png";
+import contestBg from "./img/contest-logo-bg.png";
+import houseBg from "./img/house-bg.png";
+import croagunkBg from "./img/croagunk-bg.png";
+import trioBodyBg from "./img/trio-body-bg.png";
+import pikaThreeBg from "./img/pika-three-bg.png";
+import giratinaBg from "./img/giratina-bg.png";
+import galacticTeamBg from "./img/galactic-team-bg.png";
+import powerOnSoundPath from "./sounds/power-on-sound.mp3";
+import powerOffSoundPath from "./sounds/power-off-sound.mp3";
+const powerOnSound = new Audio(powerOnSoundPath);
+const powerOffSound = new Audio(powerOffSoundPath);
 
 let customCounter = 0;
-const underwaterBg =
-  "https://archives.bulbagarden.net/media/upload/6/6f/Box_Distortion_Platinum_BDSP.png";
+
 const grandparent = document.getElementById("content");
 const parent = document.createElement("div");
 parent.id = "pc-box";
-parent.style.backgroundImage = `url(${underwaterBg})`;
+let bgImg = document.createElement("img");
+bgImg.id = "bgImg";
+bgImg.src = underwaterBg;
 console.log("appending box");
 grandparent.appendChild(parent);
+const bgArray = [
+  underwaterBg,
+  forestBg,
+  stoneBg,
+  sandBg,
+  lotusBg,
+  seaFloorBottomBg,
+  volcanoBg,
+  snowBg,
+  desertBg,
+  seaShellBg,
+  oceanFloorBg,
+  riverFloorBg,
+  skyBg,
+  pinkBg,
+  orangeBg,
+  brickBg,
+  frameBg,
+  spaceBg,
+  puddleBg,
+  fenceBg,
+  torchicBg,
+  trioFaceBg,
+  pikaTwoBg,
+  dialgaBg,
+  galacticLogoBg,
+  contestBg,
+  houseBg,
+  croagunkBg,
+  trioBodyBg,
+  pikaThreeBg,
+  giratinaBg,
+  galacticTeamBg,
+];
 
 // Create the app instance and append it after initialization
 class App {
@@ -85,3 +155,86 @@ const deleteApp = new App("Delete", "delete");
 deleteApp.appendApp();
 const folderApp = new App("folder", "folder");
 folderApp.appendApp();
+
+const leftArrow = document.getElementById("left-arrow");
+const rightArrow = document.getElementById("right-arrow");
+parent.appendChild(bgImg);
+let bgNum = 0;
+
+leftArrow.addEventListener("click", () => {
+  if (bgNum === 0) {
+    bgNum = bgArray.length - 1;
+  } else {
+    --bgNum;
+  }
+  bgImg.src = bgArray[bgNum];
+});
+
+rightArrow.addEventListener("click", () => {
+  if (bgNum === bgArray.length - 1) {
+    bgNum = 0;
+  } else {
+    ++bgNum;
+  }
+  bgImg.src = bgArray[bgNum];
+});
+
+let powerOn = true;
+
+async function turnOn() {
+  powerOnSound.play();
+  parent.style.animation = "scale-in 1s ease-in-out 1";
+  grandparent.appendChild(parent);
+  await sleep(1000);
+}
+
+async function turnOff() {
+  powerOffSound.play();
+  parent.style.animation = "scale-out 1s ease-in-out 1";
+  await sleep(1000);
+  grandparent.removeChild(parent);
+}
+
+const power = document.getElementById("power");
+power.addEventListener("click", () => {
+  if (powerOn) {
+    turnOff();
+  } else {
+    turnOn();
+  }
+  powerOn = !powerOn;
+});
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+let usernameValue = "Username";
+const usernameDisplay = document.getElementById("username-display");
+const usernameContainer = document.getElementById("username-container");
+let usernameInput = document.createElement("input");
+usernameInput.id = "username-input";
+
+usernameDisplay.addEventListener("click", (e) => {
+  usernameContainer.removeChild(usernameDisplay);
+  usernameContainer.appendChild(usernameInput);
+});
+
+usernameInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    usernameValue = usernameInput.value;
+    usernameDisplay.textContent = `${usernameValue}`;
+    usernameContainer.removeChild(usernameInput);
+    usernameContainer.appendChild(usernameDisplay);
+  }
+});
+
+class ExploreWindow {
+  constuctor(folder) {
+    this.folder = folder;
+  }
+}
+
+newFolder.addEventListener("double-click", (e) => {
+  // parent.appendChild()
+});

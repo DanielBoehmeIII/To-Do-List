@@ -51,21 +51,43 @@ header {
   overflow: hidden;
 }
 
-#username {
+#username-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   height: 100%;
   width: 80%;
   border-right: 1px dashed gray;
   background-color: rgba(55, 90, 120, 0.7);
+  position: relative;
+}
+
+#username-input {
+  display: flex;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: "Geo", serif;
+  font-size: 1.5em;
+  letter-spacing: 1px;
+  color: white;
+  height: 80%;
+  width: 80%;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  outline: none;
 }
 
 #scan-lines {
-  width: 12%;
-  height: 5%;
+  width: 100%;
+  height: 100%;
   position: absolute;
   z-index: -1;
+  animation: stretch 3s ease-in-out infinite;
+  transform-origin: center;
 }
 
 #new-project {
@@ -100,6 +122,8 @@ header {
 #content {
   grid-row: 2 / 3;
   display: flex;
+  background-color: black;
+  /* background-color: black; */
 }
 
 /* #sidebar { */
@@ -118,10 +142,18 @@ header {
   height: 100%;
   width: 100%;
   /* background-image: url("https://archives.bulbagarden.net/media/upload/6/6f/Box_Distortion_Platinum_BDSP.png"); */
-  background-size: 110%;
-  background-position: center;
-  padding: 1%;
+  /* background-size: 100%; */
+  /* background-position: cover; */
+  /* background-repeat: no-repeat; */
+  z-index: 1;
   /* cursor: url("./image/pokemon-pc-box-hand.cur"), auto; */
+}
+
+#bgImg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
 }
 
 .app {
@@ -138,6 +170,48 @@ header {
   width: 3%;
   height: 7%;
   margin: 1%;
+}
+
+#folder {
+  fill: rgba(175, 175, 55, 1);
+}
+
+#Delete {
+  fill: rgba(25, 25, 155, 1);
+}
+
+#CreateNew {
+  fill: #2ca9bc;
+}
+
+@keyframes scale-out {
+  0% {
+    transform: scaleX(100%) scaleY(100%);
+  }
+  100% {
+    transform: scaleX(200%) scaleY(0%);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scaleX(200%) scaleY(0%);
+  }
+  100% {
+    transform: scaleX(100%) scaleY(100%);
+  }
+}
+
+@keyframes stretch {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
 
 /* #pokemon-cursor { */

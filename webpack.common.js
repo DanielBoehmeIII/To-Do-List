@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -12,17 +11,11 @@ module.exports = {
       template: "./src/template.html", // Path to your HTML template
       inject: false,
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, "./assets/*/*"), // Source folder
-        },
-      ],
-    }),
   ],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
     clean: true,
   },
   module: {
@@ -31,8 +24,9 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"], // CSS handling
       },
+
       {
-        test: /\.(png|jpg|jpeg|gif|svg)$/i,
+        test: /\.(png|jpg|jpeg|gif|svg|mp3|wav)$/i,
         type: "asset/resource", // Handles images
       },
     ],
