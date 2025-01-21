@@ -232,6 +232,7 @@ usernameInput.addEventListener("keydown", (e) => {
 class ExploreWindow {
   constuctor(folder) {
     this.folder = folder;
+    const path = `${usernameValue}/${folder.name}/`;
   }
 }
 
