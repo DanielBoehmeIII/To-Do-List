@@ -251,7 +251,7 @@ class Folder extends Element {
   }
 
   addExplorer() {
-    this.elementOnDOM.addEventListener("dblclick", () => {
+    this.elementOnDOM.addEventListener("click", () => {
       // When double-clicked, open the explorer
       this.openExplorer();
       this.explorerWindow.elementOnDOM.style.animation =
@@ -486,7 +486,7 @@ function createApp(type, id) {
 
 const createNewAppElement = createApp("create-new-app", null);
 const deleteApp = createApp("delete-app", null);
-createNewAppElement.elementOnDOM.addEventListener("dblclick", (e) =>
+createNewAppElement.elementOnDOM.addEventListener("click", (e) =>
   createFolder(),
 );
 
@@ -507,7 +507,6 @@ function createFolder() {
     "text-prompt",
     "text-prompt",
   );
-  textPrompt.elementOnDOM.innerText = "Please enter a folder name";
 
   let closeIcon = textPrompt.assignSvg(closeSvgMarkup);
   closeIcon.id = "prompt-close-icon";
