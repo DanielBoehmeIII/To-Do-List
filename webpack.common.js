@@ -7,6 +7,7 @@ module.exports = {
     filename: "app.bundle.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+    publicPath: "/To-Do-List/",
   },
   plugins: [
     new HtmlWebpackPlugin({
