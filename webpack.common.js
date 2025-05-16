@@ -2,38 +2,48 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: {
-    app: "./src/index.js",
-  },
+  entry: "./src/index.js",
   output: {
-    filename: "[name].bundle.js", // <-- ✅ This is what you want
+    filename: "app.bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
     clean: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/template.html",
+    }),
+  ],
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, "src/components"),
+    },
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"], // <-- ✅ CSS handling
+        use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|mp3|wav)$/i,
-        type: "asset/resource", // <-- ✅ images & sounds
-        generator: {
-          filename: "assets/[hash][ext][query]", // outputs to /assets/
-        },
+        // for img in html
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      {
+        // for img in js or css
+        test: /\.(png|svg|jpg|jpeg|gif|svg|mp3|wav)$/i,
+        type: "asset/resource",
+      },
+      // for fonts in css
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+      },
+      // below is for csv & xml files
+      {
+        test: /\.(csv|tsv)$/i,
+        use: ["csv-loader"],
       },
     ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "To-Do List",
-      template: "./src/template.html", // <-- ✅ your template file
-      inject: false, // <-- ✅ your explicit choice
-    }),
-  ],
-  resolve: {
-    extensions: [".js"],
   },
 };
