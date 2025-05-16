@@ -7,10 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --open --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "predeploy": "git add dist -f && git commit -m \"Deployment commit\"",
+    "predeploy": "npm run build && git add dist -f && git commit -m \"Deployment commit\"",
     "deploy": "git subtree push --prefix dist origin gh-pages",
-    "install-dependencies": "npm install -D webpack webpack-cli style-loader css-loader file-loader webpack-dev-server copy-webpack-plugin webpack-merge terser-webpack-plugin image-minimizer-webpack-plugin imagemin imagemin-pngquant",
-    "uninstall-dependencies": "npm uninstall -D webpack webpack-cli style-loader css-loader file-loader webpack-dev-server copy-webpack-plugin webpack-merge terser-webpack-plugin image-minimizer-webpack-plugin imagemin imagemin-pngquant"
+    "install-dependencies": "npm install -D webpack webpack-cli style-loader css-loader webpack-dev-server webpack-merge",
+    "uninstall-dependencies": "npm uninstall -D webpack webpack-cli style-loader css-loader webpack-dev-server webpack-merge"
   },
   "repository": "https://github.com/DanielBoehmeIII/To-Do-List.git",
   "author": "",

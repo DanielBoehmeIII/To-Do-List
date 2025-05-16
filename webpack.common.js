@@ -5,15 +5,8 @@ module.exports = {
   entry: {
     app: "./src/index.js",
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "Production",
-      template: "./src/template.html", // Path to your HTML template
-      inject: false,
-    }),
-  ],
   output: {
-    filename: "[name].bundle.js",
+    filename: "[name].bundle.js", // <-- ✅ This is what you want
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
     clean: true,
@@ -22,13 +15,25 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"], // CSS handling
+        use: ["style-loader", "css-loader"], // <-- ✅ CSS handling
       },
-
       {
-        test: /\.(png|jpg|jpeg|gif|svg|mp3|wav)$/i,
-        type: "asset/resource", // Handles images
+        test: /\.(png|jpe?g|gif|svg|mp3|wav)$/i,
+        type: "asset/resource", // <-- ✅ images & sounds
+        generator: {
+          filename: "assets/[hash][ext][query]", // outputs to /assets/
+        },
       },
     ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "To-Do List",
+      template: "./src/template.html", // <-- ✅ your template file
+      inject: false, // <-- ✅ your explicit choice
+    }),
+  ],
+  resolve: {
+    extensions: [".js"],
   },
 };
