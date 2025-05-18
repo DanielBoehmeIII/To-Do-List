@@ -7,7 +7,7 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack serve --config webpack.dev.js",
-    "bg-dev": "cross-env nohup npm run dev > dev.log 2>&1 &",
+    "bg-dev": "nohup npm run dev > dev.log 2>&1 &",
     "clean": "rm -rf dist",
     "predeploy": "npm run build",
     "deploy-all": "npm run build && git add . && git commit -m \"Deploy build\" && git push origin main && npm run ghpages-deploy",
