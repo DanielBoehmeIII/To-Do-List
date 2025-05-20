@@ -1,6 +1,10 @@
 import { parent, delToggled } from "./createDeleteFuncs.js";
 import { usernameValue } from "../index.js";
-import { closeSvgMarkup, resizeSvgMarkup } from "./AssetHandling.js";
+import {
+  closeSvgMarkup,
+  resizeSvgMarkup,
+  completeTaskSound,
+} from "./AssetHandling.js";
 const parser = new DOMParser();
 export class Element {
   constructor(elementType, elementClassName, elementId, parentElement) {
@@ -288,12 +292,17 @@ export function createTask(folder, explorerContent, name) {
         `folder${folder.num}Task${folder.taskNum}Date`,
         taskDateValue,
       );
+      localStorage.setItem(
+        `folder${folder.num}Task${folder.taskNum}Checked`,
+        false,
+      );
       newTask.displayTask(folder, folder.explorer, newTask);
       folder.tasks[folder.taskNum] = newTask;
     });
   } else {
     folder.taskNum++;
     localStorage.setItem(`folder${folder.num}TaskNum`, `${folder.taskNum}`);
+
     const taskDescriptionValue = localStorage.getItem(
       `folder${folder.num}Task${folder.taskNum}Description`,
     );
@@ -306,6 +315,10 @@ export function createTask(folder, explorerContent, name) {
       taskDescriptionValue,
       taskDateValue,
     );
+    newTask.checked =
+      localStorage.getItem(
+        `folder${folder.num}Task${folder.taskNum}Checked`,
+      ) === "true";
     newTask.displayTask(folder, folder.explorer, newTask);
     folder.tasks[folder.taskNum] = newTask;
   }
@@ -319,6 +332,7 @@ export class Task {
     this.description = description;
     this.date = date;
     this.selection = this;
+    this.checked = false;
   }
 
   pressManageTask(folder, explorerContent) {
@@ -456,13 +470,21 @@ export class Task {
       `${folder.elementId}-${this.num}`,
     );
     taskCheckbox.elementOnDOM.type = "checkbox";
+    taskCheckbox.elementOnDOM.checked = this.checked;
     taskCheckbox.elementOnDOM.addEventListener("change", (e) => {
       if (e.target.checked) {
         completeTaskSound.play();
         taskForm.elementOnDOM.style.animation = "grow 5s ease-in-out 1";
+        localStorage.setItem(`folder${folder.num}Task${this.num}Checked`, true);
+        this.checked = true;
       } else {
         taskDisplayContainer.elementOnDOM.style.animation = "";
         taskForm.elementOnDOM.style.animation = "";
+        localStorage.setItem(
+          `folder${folder.num}Task${this.num}Checked`,
+          false,
+        );
+        this.checked = false;
       }
     });
     taskDisplayContainer.elementOnDOM.addEventListener("click", (e) => {
