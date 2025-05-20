@@ -6,7 +6,7 @@ import {
   toggleDelete,
   parent,
 } from "./funcs/createDeleteFuncs.js";
-
+import { beginLocalStorage } from "./funcs/localStorage.js";
 export let usernameValue = "Username";
 const grandparent = document.getElementById("content");
 parent.id = "pc-box";
@@ -22,6 +22,9 @@ export const deleteAppElement = createApp("delete-app", null);
 deleteAppElement.elementOnDOM.addEventListener("click", () => {
   toggleDelete();
 });
+window.onload = () => {
+  beginLocalStorage();
+};
 
 const leftArrow = document.getElementById("left-arrow");
 const rightArrow = document.getElementById("right-arrow");
@@ -33,7 +36,7 @@ leftArrow.addEventListener("click", () => {
   } else {
     --bgNum;
   }
-  bgImg.src = bgArray[bgNum];
+  changeBg(bgNum);
   localStorage.setItem("bgImgIndex", bgNum);
 });
 
@@ -43,9 +46,13 @@ rightArrow.addEventListener("click", () => {
   } else {
     ++bgNum;
   }
-  bgImg.src = bgArray[bgNum];
+  changeBg(bgNum);
   localStorage.setItem("bgImgIndex", bgNum);
 });
+
+export function changeBg(index) {
+  bgImg.src = bgArray[index];
+}
 
 let powerOn = true;
 
@@ -83,17 +90,24 @@ let usernameInput = document.createElement("input");
 usernameInput.id = "username-input";
 
 usernameDisplay.addEventListener("click", (e) => {
-  usernameContainer.removeChild(usernameDisplay);
-  usernameContainer.appendChild(usernameInput);
-  localStorage.setItem("username", usernameValue);
+  changeUser();
 });
 
-usernameInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    usernameValue = usernameInput.value;
-    usernameDisplay.textContent = `${usernameValue}`;
-    usernameContainer.removeChild(usernameInput);
-    usernameContainer.appendChild(usernameDisplay);
-    localStorage.setItem("username", usernameValue);
+export function changeUser(name) {
+  if (name == null) {
+    usernameContainer.removeChild(usernameDisplay);
+    usernameContainer.appendChild(usernameInput);
+    usernameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        usernameValue = usernameInput.value;
+        usernameDisplay.textContent = `${usernameValue}`;
+        usernameContainer.removeChild(usernameInput);
+        usernameContainer.appendChild(usernameDisplay);
+        localStorage.setItem("username", usernameValue);
+      }
+    });
+  } else {
+    usernameDisplay.textContent = `${name}`;
+    usernameValue = name;
   }
-});
+}

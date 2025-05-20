@@ -1,5 +1,4 @@
-import { parent } from "./createDeleteFuncs.js";
-import { delToggled } from "./createDeleteFuncs.js";
+import { parent, delToggled } from "./createDeleteFuncs.js";
 import { usernameValue } from "../index.js";
 import { closeSvgMarkup, resizeSvgMarkup } from "./AssetHandling.js";
 const parser = new DOMParser();
@@ -72,9 +71,10 @@ export class Folder extends Element {
     this.clicked = false;
     this.selected = null;
     this.selectedElement = null;
-    this.folderNum = 0;
+    this.num = 0;
     this.taskNum = 0;
-    // Add the event listener for clicking to open the explorer
+    this.explorer = null;
+    this.tasks = [];
   }
 
   openExplorer() {
@@ -114,6 +114,7 @@ export class Folder extends Element {
       "explorer-content",
       `${this.elementId}-content`,
     );
+    this.explorer = explorerContent;
     const newTask = explorerSidebar.createChild(
       "div",
       "task-options",
@@ -123,9 +124,9 @@ export class Folder extends Element {
     newText.elementOnDOM.textContent = "New Task";
     // const newTaskIcon = newTask.assignSvg(newTaskSvgMarkup);
     // newTaskIcon.elementOnDOM.className = "task-icon";
-    newTask.elementOnDOM.addEventListener("click", (e) =>
-      createTask(this, explorerContent, this.taskNum),
-    );
+    newTask.elementOnDOM.addEventListener("click", (e) => {
+      createTask(this, explorerContent);
+    });
     const manageTask = explorerSidebar.createChild(
       "div",
       "task-options",
@@ -158,6 +159,15 @@ export class Folder extends Element {
       "delete-task-text",
     );
     deleteText.elementOnDOM.textContent = "Delete Task";
+    const taskNum = parseInt(localStorage.getItem(`folder${this.num}TaskNum`));
+    if (taskNum != 0) {
+      for (let j = 0; j < taskNum; j++) {
+        let taskName = localStorage.getItem(
+          `folder${this.num}Task${j + 1}Name`,
+        );
+        createTask(this, this.explorer, taskName);
+      }
+    }
   }
 
   addExplorer() {
@@ -190,8 +200,8 @@ export class Folder extends Element {
   }
 }
 
-function createTask(folder, explorerContent, taskNum) {
-  if (!taskNum) {
+export function createTask(folder, explorerContent, name) {
+  if (!name) {
     const taskInputContainer = new Element(
       "h6",
       "task-container",
@@ -265,41 +275,39 @@ function createTask(folder, explorerContent, taskNum) {
         taskDescriptionValue,
         taskDateValue,
       );
+      localStorage.setItem(`folder${folder.num}TaskNum`, `${folder.taskNum}`);
       localStorage.setItem(
-        `FolderNum${folder.folderNum}TaskNum`,
-        folder.taskNum,
-      );
-      localStorage.setItem(
-        `FolderNum${folder.folderNum}Task${folder.taskNum}Name`,
+        `folder${folder.num}Task${folder.taskNum}Name`,
         taskNameValue,
       );
       localStorage.setItem(
-        `FolderNum${folder.folderNum}Task${folder.taskNum}Description`,
+        `folder${folder.num}Task${folder.taskNum}Description`,
         taskDescriptionValue,
       );
       localStorage.setItem(
-        `FolderNum${folder.folderNum}Task${folder.taskNum}Date`,
+        `folder${folder.num}Task${folder.taskNum}Date`,
         taskDateValue,
       );
-      newTask.displayTask(folder, explorerContent, newTask);
+      newTask.displayTask(folder, folder.explorer, newTask);
+      folder.tasks[folder.taskNum] = newTask;
     });
   } else {
-    const taskNameValue = localStorage.getItem(
-      `FolderNum${folder.folderNum}Task${folder.taskNum}Name`,
-    );
+    folder.taskNum++;
+    localStorage.setItem(`folder${folder.num}TaskNum`, `${folder.taskNum}`);
     const taskDescriptionValue = localStorage.getItem(
-      `FolderNum${folder.folderNum}Task${folder.taskNum}Description`,
+      `folder${folder.num}Task${folder.taskNum}Description`,
     );
     const taskDateValue = localStorage.getItem(
-      `FolderNum${folder.folderNum}Task${folder.taskNum}Date`,
+      `folder${folder.num}Task${folder.taskNum}Date`,
     );
     let newTask = new Task(
-      taskNum,
-      taskNameValue,
+      folder.taskNum,
+      name,
       taskDescriptionValue,
       taskDateValue,
     );
-    newTask.displayTask(folder, explorerContent, newTask);
+    newTask.displayTask(folder, folder.explorer, newTask);
+    folder.tasks[folder.taskNum] = newTask;
   }
 }
 
@@ -314,10 +322,12 @@ export class Task {
   }
 
   pressManageTask(folder, explorerContent) {
-    explorerContent.elementOnDOM.removeChild(
-      folder.selectedElement.elementOnDOM,
-    );
-    this.createManagedTask(folder, explorerContent);
+    if (folder.selectedElement) {
+      explorerContent.elementOnDOM.removeChild(
+        folder.selectedElement.elementOnDOM,
+      );
+      this.createManagedTask(folder, explorerContent);
+    }
   }
 
   createManagedTask(folder, explorerContent) {
@@ -389,7 +399,14 @@ export class Task {
         return;
       }
       explorerContent.elementOnDOM.removeChild(taskInputContainer.elementOnDOM);
-      this.displayTask(folder, explorerContent);
+      localStorage.setItem(`folder${folder.num}Task${this.num}Name`, this.name);
+      localStorage.setItem(
+        `folder${folder.num}Task${this.num}Description`,
+        this.description,
+      );
+      localStorage.setItem(`folder${folder.num}Task${this.num}Date`, this.date);
+      this.displayTask(folder, folder.explorer);
+      folder.tasks[this.num] = this;
     });
   }
 
@@ -474,45 +491,33 @@ export class Task {
     explorerContent.elementOnDOM.removeChild(
       folder.selectedElement.elementOnDOM,
     );
-    localStorage.removeItem(`folderNum${folder.folderNum}Task${this.num}Name`);
-    localStorage.removeItem(`folderNum${folder.folderNum}Task${this.num}Date`);
-    localStorage.removeItem(
-      `folderNum${folder.folderNum}Task${this.num}Description`,
-    );
     for (let i = folder.taskNum - 1; i >= this.num; i--) {
       localStorage.setItem(
-        `folderNum${folder.folderNum}Task${i}Name`,
-        localStorage.getItem(`folderNum${folder.folderNum}Task${i++}Name`),
+        `folder${folder.num}Task${i}Name`,
+        localStorage.getItem(`folder${folder.num}Task${i + 1}Name`),
       );
       localStorage.setItem(
-        `folderNum${folder.folderNum}Task${i}Description`,
-        localStorage.getItem(
-          `folderNum${folder.folderNum}Task${i++}Description`,
-        ),
+        `folder${folder.num}Task${i}Description`,
+        localStorage.getItem(`folder${folder.num}Task${i + 1}Description`),
       );
       localStorage.setItem(
-        `folderNum${folder.folderNum}Task${i}Date`,
-        localStorage.getItem(`folderNum${folder.folderNum}Task${i++}Date`),
+        `folder${folder.num}Task${i}Date`,
+        localStorage.getItem(`folder${folder.num}Task${i + 1}Date`),
       );
       folder.tasks[i].name = localStorage.getItem(
-        `folderNum${folder.folderNum}Task${i}Name`,
+        `folder${folder.num}Task${i + 1}Name`,
       );
       folder.tasks[i].description = localStorage.removeItem(
-        `folderNum${folder.folderNum}Task${i}Description`,
+        `folder${folder.num}Task${i + 1}Description`,
       );
       folder.tasks[i].date = localStorage.removeItem(
-        `folderNum${folder.folderNum}Task${i}Date`,
+        `folder${folder.num}Task${i + 1}Date`,
       );
-      localStorage.removeItem(`folderNum${folder.folderNum}Task${i++}Name`);
-      localStorage.removeItem(`folderNum${folder.folderNum}Task${i++}Date`);
-      localStorage.removeItem(
-        `folderNum${folder.folderNum}Task${i++}description`,
-      );
-      folder.taskNum--;
-      localStorage.setItem(
-        `folderNum${folder.folderNum}TaskNum`,
-        folder.taskNum,
-      );
+      localStorage.removeItem(`folder${folder.num}Task${i + 1}Name`);
+      localStorage.removeItem(`folder${folder.num}Task${i + 1}Date`);
+      localStorage.removeItem(`folder${folder.num}Task${i + 1}description`);
     }
+    folder.taskNum--;
+    localStorage.setItem(`folder${folder.num}TaskNum`, folder.taskNum);
   }
 }

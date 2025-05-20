@@ -11,7 +11,7 @@ let folders = [];
 export const parent = document.createElement("div");
 export let customCounter = 1;
 export let delToggled = false;
-export let foldersCreated = localStorage.getItem("foldersCreated");
+export let foldersCreated = 0;
 export function createFolder(name) {
   if (!name) {
     const newFolderPromptContainer = new Element(
@@ -88,41 +88,65 @@ export function createFolder(name) {
         () => {
           parent.removeChild(newFolderPromptContainer.elementOnDOM);
 
-          initializeFolder(folderNameValue, closeIcon);
+          initializeFolder(folderNameValue);
+          closeIcon = null;
         },
       );
     });
   } else {
-    initializeFolder(name, closeIcon);
+    return initializeFolder(name);
   }
 }
 
-function initializeFolder(name, closeIcon) {
-  const newFolder = createApp("folder", name);
+function initializeFolder(name) {
+  let newFolder = createApp("folder", name);
   // Create the new folder and add the explorer
-  localStorage.setItem(`folderNum${foldersCreated}`, name);
-  newFolder.folderNum = foldersCreated;
   folders[foldersCreated] = newFolder;
   foldersCreated++;
+  localStorage.setItem(`folder${foldersCreated}Name`, name);
+  newFolder.num = foldersCreated;
   localStorage.setItem("foldersCreated", foldersCreated);
   newFolder.addExplorer();
   newFolder.elementOnDOM.addEventListener("click", (e) => {
     if (delToggled == true) {
-      localStorage.removeItem(`${newFolder.folderNum}`);
-      for (i = newFolder.folderNum + 1; i < foldersCreated; i++) {
-        --folders[i].folderNum;
+      console.log(newFolder.taskNum);
+      for (let i = newFolder.taskNum; i >= newFolder.num; i--) {
+        let nextName = localStorage.getItem(
+          `folder${newFolder.num}Task${i + 1}Name`,
+        );
+        let nextDescription = localStorage.getItem(
+          `folder${newFolder.num}Task${i + 1}Description`,
+        );
+        let nextDate = localStorage.getItem(
+          `folder${newFolder.num}Task${i + 1}Date`,
+        );
+        localStorage.setItem(`folder${newFolder.num}Task${i}Name`, nextName);
+        localStorage.setItem(
+          `folder${newFolder.num}Task${i}Description`,
+          nextDescription,
+        );
+        localStorage.setItem(`folder${newFolder.num}Task${i}Date`, nextDate);
+        localStorage.removeItem(`folder${newFolder.num}Task${i + 1}Name`);
+        localStorage.removeItem(`folder${newFolder.num}Task${i + 1}Date`);
+        localStorage.removeItem(
+          `folder${newFolder.num}Task${i + 1}description`,
+        );
+      }
+      for (let i = newFolder.num + 1; i < foldersCreated; i++) {
+        --folders[i].num;
       }
       --foldersCreated;
       localStorage.setItem("foldersCreated", foldersCreated);
       newFolder.elementOnDOM.style.animation = "fade-out-red 1s ease-in-out 1";
       newFolder.elementOnDOM.addEventListener("animationend", () => {
+        // parent.removeChild(newFolder);
         parent.removeChild(newFolder.elementOnDOM);
+        newFolder = null;
+        return;
       });
     }
   });
-
-  // Cleanup
-  closeIcon = null;
+  return newFolder;
 }
 
 export function createApp(type, id) {
@@ -130,7 +154,6 @@ export function createApp(type, id) {
   let appSvgMarkup = null;
   let textValue = null;
   let className = null;
-  const parent = document.getElementById("pc-box");
   if (type === "create-new-app") {
     className = "create-app";
     id = "create-new-app";

@@ -1,5 +1,8 @@
 // Code from "https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API"
 // that has been refactored for this project
+import { changeBg, changeUser } from "../index.js";
+import { createTask } from "./classes.js";
+import { createFolder } from "./createDeleteFuncs.js";
 function storageAvailable(type) {
   let storage;
   try {
@@ -19,30 +22,36 @@ function storageAvailable(type) {
   }
 }
 
-if (storageAvailable("localStorage")) {
-  if (!localStorage.getItem("bgImgIndex")) {
-    populateStorage();
+export function beginLocalStorage() {
+  if (storageAvailable("localStorage")) {
+    if (
+      localStorage.getItem("bgImgIndex") == null ||
+      localStorage.getItem("bgImgIndex") == undefined
+    ) {
+      console.log("populating");
+      populateStorage();
+    } else {
+      console.log("configuring");
+      setConfig();
+    }
+  } else {
+    console.log("LocalStorage unavailable");
   }
-} else {
-  setConfig();
 }
 
-function setConfig () {
-  const bgStyle = localStorage.getItem("bgImgIndex");
-  const folderNum = localStorage.getItem("foldersCreated");
-  const folderNames[];
-  for (i = 0; i < folderNum; i++) {
-    folderNames[i] = localStorage.getItem("folderName${i}");
-    createFolder(folderNames[i]);
-    const taskNames[];
-    const taskDescriptions[];
-    const taskDates[];
-    for (i = 0; i < taskNum; i++) {
-      folderNames[i] = localStorage.getItem("folderName${i}");
-      createFolder(folderNames[i]);
-    }
+function setConfig() {
+  const bgStyle = parseInt(localStorage.getItem("bgImgIndex"));
+  changeBg(bgStyle);
+  const username = localStorage.getItem("username");
+  changeUser(username);
+  const foldersCreated = parseInt(localStorage.getItem("foldersCreated"));
+  for (let i = 1; i <= foldersCreated; i++) {
+    const folderName = localStorage.getItem(`folder${i}Name`);
+    const newFolder = createFolder(folderName);
   }
-  const taskNum = localStorage.getItem("tasksCreated");
-  const user = localStorage.getItem("username");
-   
+}
+
+function populateStorage() {
+  localStorage.setItem("bgImgIndex", 0);
+  localStorage.setItem("foldersCreated", 0);
 }
